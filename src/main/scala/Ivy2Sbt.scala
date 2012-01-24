@@ -11,7 +11,12 @@ object Ivy2Sbt {
   }
 
   def outputSbtDepLine(dep: Node) = {
-    println("  \"%s\" %s \"%s\" %s \"%s\",".format(dep.attribute("org").getOrElse(""), "%", dep.attribute("name").getOrElse(""), "%", dep.attribute("rev").getOrElse("")))
+    println("  \"%s\" %s \"%s\" %s \"%s\"%s"
+      .format(dep.attribute("org").getOrElse(""), "%", dep.attribute("name").getOrElse(""), "%", dep.attribute("rev").getOrElse(""), 
+        (dep.attribute("conf") match {
+	  case None => ","
+	  case Some(conf) => " % \""+conf.head.toString.replace("&gt;",">").replace("&gt;",">")+"\","
+	})))
   }
 
 }
